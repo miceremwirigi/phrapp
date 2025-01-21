@@ -1,0 +1,38 @@
+.heartrate-container {
+  padding: 20px;
+  background-color: #010916; /* Match the background color of App-content */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: white; /* Match the text color */
+}
+
+.table-wrapper {
+  max-height: 400px; /* Set a max height for the table */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.heartrate-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.heartrate-table th,
+.heartrate-table td {
+  border: 1px solid #4b515a; /* Match the border color to the footer background */
+  padding: 8px;
+  text-align: left;
+}
+
+.heartrate-table th {
+  background-color: #282c34; /* Match the header background color */
+  color: white; /* Match the text color */
+}
+
+.heartrate-table tr:nth-child(even) {
+  background-color: #282c34; /* Match the header background color for even rows */
+}
+
+.heartrate-table tr:hover {
+  background-color: #4b515a; /* Match the footer background color on hover */
+}
