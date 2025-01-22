@@ -11,7 +11,7 @@ const OneHospitalVisitView = () => {
   useEffect(() => {
     const fetchHospitalVisit = async () => {
       try {
-        const response = await axios.get(`/api/hospitalvisitentries/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/hospitalvisitentries/${id}`);
         const data = response.data.data; // Access the data field within the response object
         setHospitalVisit(data);
       } catch (error) {

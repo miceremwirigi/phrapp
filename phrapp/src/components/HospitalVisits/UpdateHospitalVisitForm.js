@@ -18,7 +18,7 @@ const UpdateHospitalVisitForm = ({ id }) => {
   useEffect(() => {
     const fetchHospitalVisit = async () => {
       try {
-        const response = await axios.get(`/api/hospitalvisitentries/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/hospitalvisitentries/${id}`);
         setFormData(response.data);
       } catch (error) {
         console.error('Error fetching hospital visit:', error);
@@ -38,7 +38,7 @@ const UpdateHospitalVisitForm = ({ id }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.put(`/api/hospitalvisitentries/${id}`, formData);
+      await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/hospitalvisitentries/${id}`, formData);
       alert('Hospital visit updated successfully');
     } catch (error) {
       console.error('Error updating hospital visit:', error);
