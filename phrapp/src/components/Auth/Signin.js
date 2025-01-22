@@ -29,9 +29,9 @@ const Signin = ({ setIsLoggedIn, setUsername }) => {
 
         if (response.data && response.data.data.personId && response.data.data.username) {
           setIsLoggedIn(true);
-            setUsername(response.data.data.username);
-            setMessage('Signin successful');
-            navigate('/');
+          setUsername(response.data.data.username);
+          setMessage('Signin successful');
+          navigate('/');
         } else {
           setMessage('Signin failed!');
           navigate('/signin'); // Redirect to signin if not authenticated

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import Loader from '../Loader';
 
 const OneHospitalVisitView = () => {
   const { id } = useParams();
   const [hospitalVisit, setHospitalVisit] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchHospitalVisit = async () => {
@@ -14,18 +16,24 @@ const OneHospitalVisitView = () => {
         setHospitalVisit(data);
       } catch (error) {
         console.error('Error fetching hospital visit:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchHospitalVisit();
   }, [id]);
 
+  if (loading) {
+    return <Loader />;
+  }
+
   if (!hospitalVisit) {
-    return <div>Loading...</div>;
+    return <div>No hospital visit found</div>;
   }
 
   return (
-    <div>
+    <div className="details-view">
       <h2>Hospital Visit Details</h2>
       <table>
         <thead>
