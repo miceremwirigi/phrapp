@@ -41,7 +41,7 @@ const AddDiagnosisForm = ({ personId, onPrevious, onSubmit }) => {
           symptoms: illness.symptoms.split(',').map(symptom => symptom.trim()), // Convert to array of strings
           signs: illness.signs.split(',').map(sign => sign.trim()), // Convert to array of strings
         };
-        return axios.post('/api/illnesses', formattedIllness, {
+        return axios.post('https://api.personalhealthrecord.store/api/illnesses', formattedIllness, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -60,7 +60,7 @@ const AddDiagnosisForm = ({ personId, onPrevious, onSubmit }) => {
         illnesses: illnessIds.map(id => ({ id })),
       };
 
-      // const response = await axios.post('/api/diagnoses', formattedData, {
+      // const response = await axios.post('https://api.personalhealthrecord.store/api/diagnoses', formattedData, {
       //   headers: {
       //     'Content-Type': 'application/json',
       //   },

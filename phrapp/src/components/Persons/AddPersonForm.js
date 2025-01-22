@@ -23,7 +23,7 @@ const AddPersonForm = ({onSubmit}) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get('/api/check-auth', {
+        const response = await axios.get('https://api.personalhealthrecord.store/api/check-auth', {
           withCredentials: true,
           headers: {
             'Content-Type': 'application/json',

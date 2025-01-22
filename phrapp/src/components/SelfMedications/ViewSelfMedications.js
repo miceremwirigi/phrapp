@@ -11,7 +11,7 @@ const ViewSelfMedications = () => {
   useEffect(() => {
     const fetchSelfMedications = async () => {
       try {
-        const response = await axios.get('/api/selfmedicationentries');
+        const response = await axios.get('https://api.personalhealthrecord.store/api/selfmedicationentries');
         const data = response.data.data; // Access the data field within the response object
         if (Array.isArray(data)) {
           setSelfMedications(data);

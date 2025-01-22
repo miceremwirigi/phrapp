@@ -1,6 +1,7 @@
 import React from 'react';
 
 function Footer() {
+  console.log('Footer rendered');
   return (
     <footer className="App-footer">
       <p>&copy; {new Date().getFullYear()} PHR. All rights reserved.</p>

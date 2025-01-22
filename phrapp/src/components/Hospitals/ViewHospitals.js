@@ -9,7 +9,7 @@ const ViewHospitals = () => {
   useEffect(() => {
     const fetchHospitals = async () => {
       try {
-        const response = await axios.get('/api/hospitalvisitentries');
+        const response = await axios.get('https://api.personalhealthrecord.store/api/hospitalvisitentries');
         const data = response.data.data; // Access the data field within the response object
         const uniqueHospitals = Array.from(new Set(data.map(visit => visit.hospital.id)))
           .map(id => data.find(visit => visit.hospital.id === id).hospital);

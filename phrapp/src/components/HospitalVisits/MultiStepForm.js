@@ -25,7 +25,7 @@ const MultiStepForm = () => {
 
   const handlePersonSubmit = async (data) => {
     try {
-      const response = await axios.post('/api/persons', data, {
+      const response = await axios.post('https://api.personalhealthrecord.store/api/persons', data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -40,7 +40,7 @@ const MultiStepForm = () => {
 
   const handleHospitalSubmit = async (data) => {
     try {
-      const response = await axios.post('/api/hospitals', data, {
+      const response = await axios.post('https://api.personalhealthrecord.store/api/hospitals', data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -55,7 +55,7 @@ const MultiStepForm = () => {
 
   const handleDiagnosisSubmit = async (data) => {
     try {
-      const response = await axios.post('/api/diagnoses', data, {
+      const response = await axios.post('https://api.personalhealthrecord.store/api/diagnoses', data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -70,7 +70,7 @@ const MultiStepForm = () => {
 
   const handleTreatmentSubmit = async (data) => {
     try {
-      const response = await axios.post('/api/treatments', data, {
+      const response = await axios.post('https://api.personalhealthrecord.store/api/treatments', data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -93,7 +93,7 @@ const MultiStepForm = () => {
     };
 
     try {
-      const response = await axios.post('/api/hospitalvisitentries', hospitalVisitEntry);
+      const response = await axios.post('https://api.personalhealthrecord.store/api/hospitalvisitentries', hospitalVisitEntry);
       console.log('Hospital Visit Entry created successfully:', response.data);
       navigate('/view-hospital-visits'); // Redirect to ViewHospitalVisits on success
     } catch (error) {

@@ -11,7 +11,7 @@ const ViewHospitalVisits = () => {
   useEffect(() => {
     const fetchHospitalVisits = async () => {
       try {
-        const response = await axios.get('/api/hospitalvisitentries');
+        const response = await axios.get('https://api.personalhealthrecord.store/api/hospitalvisitentries');
         const data = response.data.data; // Access the data field within the response object
         if (Array.isArray(data)) {
           setHospitalVisits(data);
