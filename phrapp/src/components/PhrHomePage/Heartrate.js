@@ -5,7 +5,7 @@ const Heartrate = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('https://phr-backend.onrender.com/api/heartmonitorentries')
+    fetch('https://api.personalhealthrecord.store/api/heartmonitorentries')
       .then(response => response.json())
       .then(data => setData(data.data))
       .catch(error => console.error('Error fetching data:', error));
