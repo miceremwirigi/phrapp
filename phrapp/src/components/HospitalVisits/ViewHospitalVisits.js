@@ -11,7 +11,7 @@ const ViewHospitalVisits = () => {
   useEffect(() => {
     const fetchHospitalVisits = async () => {
       try {
-        const response = await axios.get('https://api.personalhealthrecord.store/api/hospitalvisitentries');
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/hospitalvisitentries`);
         const data = response.data.data; // Access the data field within the response object
         if (Array.isArray(data)) {
           setHospitalVisits(data);
@@ -42,7 +42,7 @@ const ViewHospitalVisits = () => {
 
   const handleBack = () => {
     setLoading(true);
-    navigate(-1);
+    navigate('/');
   };
 
   return (

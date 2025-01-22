@@ -12,7 +12,7 @@ const ViewHeartRateEntries = () => {
   useEffect(() => {
     const fetchHeartRateEntries = async () => {
       try {
-        const response = await axios.get('https://api.personalhealthrecord.store/api/mwirigiheartratemonitor');
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/mwirigiheartratemonitor`);
         setHeartRateEntries(response.data.data);
       } catch (error) {
         console.error('Error fetching heart rate entries:', error);

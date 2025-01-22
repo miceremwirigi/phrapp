@@ -23,7 +23,7 @@ const MultiStepForm = () => {
 
   const handlePersonSubmit = async (data) => {
     try {
-      const response = await axios.post('https://api.personalhealthrecord.store/api/persons', data, {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/persons`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -38,7 +38,7 @@ const MultiStepForm = () => {
 
   const handleDiagnosisSubmit = async (data) => {
     try {
-      const response = await axios.post('https://api.personalhealthrecord.store/api/diagnoses', data, {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/diagnoses`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -53,7 +53,7 @@ const MultiStepForm = () => {
 
   const handleTreatmentSubmit = async (data) => {
     try {
-      const response = await axios.post('https://api.personalhealthrecord.store/api/treatments', data, {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/treatments`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -75,7 +75,7 @@ const MultiStepForm = () => {
     };
 
     try {
-      const response = await axios.post('https://api.personalhealthrecord.store/api/selfmedicationentries', selfMedicationEntry);
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/selfmedicationentries`, selfMedicationEntry);
       console.log('Self Medication Entry created successfully:', response.data);
       navigate('/view-self-medications'); // Redirect to ViewSelfMedications on success
     } catch (error) {

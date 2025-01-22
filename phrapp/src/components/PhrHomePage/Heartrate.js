@@ -5,7 +5,7 @@ const Heartrate = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('https://api.personalhealthrecord.store/api/heartmonitorentries')
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/heartmonitorentries`)
       .then(response => response.json())
       .then(data => setData(data.data))
       .catch(error => console.error('Error fetching data:', error));

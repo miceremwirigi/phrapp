@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const checkAuth = async (navigate) => {
   try {
-    const response = await axios.get('https://api.personalhealthrecord.store/api/check-auth', {
+    const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/check-auth`, {
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
