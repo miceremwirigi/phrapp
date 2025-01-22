@@ -176,8 +176,6 @@ html, body, #root, .App, .App-content, .PhrHomePage  {
 }
 
 .App-footer {
-  height: calc(var(--footer-height) * 0.5);
-  padding: 10px;
   background-color: #282c34; /* Dark shade */
   color: white;
   text-align: center;
@@ -418,6 +416,85 @@ form .form-group {
   }
 }
 
+/* General table styling */
+table {
+  width: 80%;
+  max-width: 80%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  background-color: #333; /* Dark background color */
+  color: #fff; /* Light text color */
+  overflow: auto; /* Make table content scrollable */
+  display: block;
+}
+
+/* Table header styling */
+table th {
+  background-color: #444; /* Darker background for headers */
+  color: #fff;
+  padding: 10px;
+  text-align: left;
+}
+
+/* Table cell styling */
+table td {
+  padding: 10px;
+  border: 1px solid #555; /* Border color */
+}
+
+/* ID field styling */
+table td.id-field {
+  max-width: 100px; /* Smaller max width for ID field */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Hover properties for table rows */
+table tr:hover {
+  background-color: #555; /* Slightly lighter shade for hover effect */
+}
+
+/* Make table content scrollable only when necessary */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+/* Styling for details-view tables */
+.details-view table {
+  width: 100%;
+  max-width: 100%;
+  margin: 20px 0;
+  border-collapse: collapse;
+  background-color: #333; /* Dark background color */
+  color: #fff; /* Light text color */
+  overflow: auto; /* Make table content scrollable */
+  display: block;
+}
+
+.details-view table th {
+  background-color: #444; /* Darker background for headers */
+  color: #fff;
+  padding: 10px;
+  text-align: left;
+}
+
+.details-view table td {
+  padding: 10px;
+  border: 1px solid #555; /* Border color */
+  color: #fff; /* Ensure text color is light */
+}
+
+form textarea {
+  padding: 8px;
+}
+
+form button {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+}
+
 .sticky-button {
   position: fixed;
   bottom: var(--footer-height);
@@ -426,12 +503,6 @@ form .form-group {
   background-color: #007bff;
   color: white;
   padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background-color 0.3s ease-in-out;
 }
 
 .sticky-button:hover {
@@ -445,4 +516,66 @@ form .form-group {
   z-index: 1000;
   display: flex;
   gap: 10px;
+}
+
+/* Media query for smaller screens (phones) */
+@media (max-width: 600px) {
+  /* Smaller buttons */
+  button {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  /* Smaller header */
+  .App-header {
+    font-size: 0.8em;
+  }
+
+  /* Optimize forms for phones */
+  form {
+    width: 94%; /* Fill 94% of the screen width */
+    padding: 10px;
+    margin: 0 auto; /* Center the form */
+  }
+
+  form textarea {
+    font-size: 12px;
+  }
+
+  form button {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  /* Optimize menu for phones */
+  .menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .menu-content button {
+    width: 100%;
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  /* Make tables scrollable on overflow vertical and horizontal */
+  table {
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    display: block;
+  }
+
+  table th, table td {
+    padding: 8px;
+    font-size: 12px;
+  }
 }
