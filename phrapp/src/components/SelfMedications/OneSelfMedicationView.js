@@ -11,7 +11,7 @@ const OneSelfMedicationView = () => {
   useEffect(() => {
     const fetchSelfMedication = async () => {
       try {
-        const response = await axios.get(`/api/selfmedicationentries/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/selfmedicationentries/${id}`);
         const data = response.data.data; // Access the data field within the response object
         setSelfMedication(data);
       } catch (error) {

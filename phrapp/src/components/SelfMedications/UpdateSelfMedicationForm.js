@@ -17,7 +17,7 @@ const UpdateSelfMedicationForm = ({ id }) => {
   useEffect(() => {
     const fetchSelfMedication = async () => {
       try {
-        const response = await axios.get(`/api/selfmedicationentries/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/selfmedicationentries/${id}`);
         setFormData(response.data);
       } catch (error) {
         console.error('Error fetching self-medication:', error);
@@ -37,7 +37,7 @@ const UpdateSelfMedicationForm = ({ id }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.put(`/api/selfmedicationentries/${id}`, formData);
+      await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/selfmedicationentries/${id}`, formData);
       alert('Self medication updated successfully');
     } catch (error) {
       console.error('Error updating self medication:', error);

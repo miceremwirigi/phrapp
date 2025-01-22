@@ -10,7 +10,7 @@ const OneHospitalView = () => {
   useEffect(() => {
     const fetchOneHospital = async () => {
       try {
-        const response = await axios.get(`/api/hospitals/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/hospitals/${id}`);
         setHospital(response.data);
       } catch (error) {
         console.error('Error fetching hospital visit:', error);

@@ -9,7 +9,7 @@ const OnePersonView = ({ personId }) => {
   useEffect(() => {
     const fetchPerson = async () => {
       try {
-        const response = await axios.get(`/api/persons/${personId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/persons/${personId}`);
         setPerson(response.data.data);
       } catch (error) {
         console.error('Error fetching person:', error);
