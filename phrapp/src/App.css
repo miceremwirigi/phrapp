@@ -110,7 +110,7 @@ html, body, #root, .App, .App-content, .PhrHomePage  {
 /* Menu styling */
 .menu {
   position: relative;
-  margin-top: 0px;
+  margin-top: 50px;
   margin-left: 0;
   margin-right: auto;
   display: flex;
@@ -302,6 +302,47 @@ form .form-group {
   color: white;
 }
 
+/* Details view styling */
+.details-view {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.details-view h2 {
+  margin-bottom: 20px;
+}
+
+.details-view table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.details-view th, .details-view td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.details-view th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.details-view td {
+  background-color: #fff;
+}
+
+.details-view ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.details-view li {
+  margin-bottom: 10px;
+}
+
 /* Media Queries for Phone and Tablet */
 @media (max-width: 768px) {
   .App-header, .App-footer {
@@ -327,7 +368,7 @@ form .form-group {
   }
 
   .signin, .profile {
-    margin-right: 0;
+    margin-right: 5px;
     margin-bottom: 10px;
   }
 
