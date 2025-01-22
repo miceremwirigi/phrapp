@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+
 import Cookies from 'js-cookie';
 import Header from './components/PhrHomePage/Header';
 import Footer from './components/PhrHomePage/Footer';
@@ -16,6 +17,7 @@ import ViewSelfMedications from './components/SelfMedications/ViewSelfMedication
 import OneSelfMedicationView from './components/SelfMedications/OneSelfMedicationView';
 import OnePersonView from './components/Persons/OnePersonView';
 import ViewHospitals from './components/Hospitals/ViewHospitals';
+import ViewHeartRateEntries from './components/HeartRateMonitor/ViewHeartRateEntries';
 import axios from 'axios';
 import './App.css';
 
@@ -25,6 +27,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [personId, setPersonId] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -61,6 +64,38 @@ function App() {
 
     checkAuth();
   }, []);
+
+  useEffect(() => {
+    const header = headerRef.current;
+    const content = contentRef.current;
+
+    if (location.pathname === '/') {
+      header.classList.add('show');
+      header.classList.remove('fade-out');
+      content.style.paddingTop = 'var(--header-height)';
+    } else {
+      let headerTimeout;
+      const handleMouseMove = () => {
+        clearTimeout(headerTimeout);
+        header.classList.add('show');
+        header.classList.remove('fade-out');
+        content.style.paddingTop = 'var(--header-height)';
+        headerTimeout = setTimeout(() => {
+          header.classList.remove('show');
+          header.classList.add('fade-out');
+          content.style.paddingTop = '0';
+        }, 5000);
+      };
+
+      document.addEventListener('mousemove', handleMouseMove);
+
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        clearTimeout(headerTimeout);
+      };
+    }
+
+  }, [location.pathname]);
 
   const handleLogout = () => {
     Cookies.remove('jwt');
@@ -149,6 +184,15 @@ function App() {
               </PrivateRoute>
             } 
           />
+          <Route 
+            path="/view-heart-rate-entries" 
+            element={
+              <PrivateRoute isLoggedIn={isLoggedIn}>
+                <ViewHeartRateEntries />
+              </PrivateRoute>
+            } 
+          />
+
         </Routes>
       </div>
       <Footer />

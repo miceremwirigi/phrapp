@@ -9,7 +9,7 @@ function Content() {
   const handleMenuClick = (option) => {
     setLoading(true);
     if (option === 'health-monitor') {
-      navigate('/health-monitor');
+      navigate('/view-heart-rate-entries');
     } else if (option === 'my-details') {
       navigate('/my-details');
     } else if (option === 'hospital-visits') {
