@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from './logo.svg'; // Ensure you have a logo image
+import Loader from '../Loader';
 
 function Content() {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleMenuClick = (option) => {
+    setLoading(true);
     if (option === 'health-monitor') {
-      navigate('/health-monitor');
+      navigate('/view-heart-rate-entries');
     } else if (option === 'my-details') {
       navigate('/my-details');
     } else if (option === 'hospital-visits') {
@@ -16,6 +18,8 @@ function Content() {
       navigate('/view-self-medications');
     } else if (option === 'add-hospital-visit') {
       navigate('/add-hospital-visit');
+    } else if (option === 'my-hospitals') {
+      navigate('/view-hospitals');
     } else {
       navigate('/');
     }
@@ -23,6 +27,7 @@ function Content() {
 
   return (
     <div className="Content-field">
+      {loading && <Loader />}
       <div className="menu">
         <button className="menupbtn">Menu</button>
         <div className="menu-content">
@@ -35,10 +40,9 @@ function Content() {
         </div>
       </div>
       <div>
-        <h1>Welcome to the PHR</h1>
-        <p>Here you can save and find all the information related to your health records.</p>
+        <h1>Welcome to PHR</h1>
+        <p>Find all the information related to your health records here.</p>
         <p>Explore our features to manage your health effectively.</p>
-        <img src={logo} className="App-logo-rotate" alt="logo" />
       </div>
     </div>
   );

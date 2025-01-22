@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../Loader';
 
 const ViewSelfMedications = () => {
   const [selfMedications, setSelfMedications] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +20,8 @@ const ViewSelfMedications = () => {
         }
       } catch (error) {
         console.error('Error fetching self-medications:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -25,19 +29,23 @@ const ViewSelfMedications = () => {
   }, []);
 
   const handleRowClick = (id) => {
+    setLoading(true);
     navigate(`/self-medication/${id}`);
   };
 
   const handleAddSelfMedication = () => {
+    setLoading(true);
     navigate('/add-self-medication');
   };
 
   const handleBack = () => {
+    setLoading(true);
     navigate(-1);
   };
 
   return (
     <div className="App-content">
+      {loading && <Loader />}
       <h2>Self Medications</h2>
       <button onClick={handleAddSelfMedication}>Add Self Medication</button>
       <button onClick={handleBack} className="back-button">Back</button>

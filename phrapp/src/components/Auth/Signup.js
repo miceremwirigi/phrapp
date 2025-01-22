@@ -33,7 +33,7 @@ const Signup = () => {
       await axios.post('http://localhost:5000/api/register', formData);
       setMessage('Signup successful');
       setTimeout(() => {
-        navigate('/login');
+        navigate('/signin');
       }, 2000);
     } catch (error) {
       console.error('Error during signup:', error);

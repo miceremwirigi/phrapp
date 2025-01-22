@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import Loader from '../Loader';
 
 const OneSelfMedicationView = () => {
   const { id } = useParams();
   const [selfMedication, setSelfMedication] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchSelfMedication = async () => {
@@ -14,18 +16,24 @@ const OneSelfMedicationView = () => {
         setSelfMedication(data);
       } catch (error) {
         console.error('Error fetching self-medication:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchSelfMedication();
   }, [id]);
 
+  if (loading) {
+    return <Loader />;
+  }
+
   if (!selfMedication) {
-    return <div>Loading...</div>;
+    return <div>No self medication found</div>;
   }
 
   return (
-    <div>
+    <div className="details-view">
       <h2>Self Medication Details</h2>
       <table>
         <thead>

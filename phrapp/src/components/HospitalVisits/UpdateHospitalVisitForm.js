@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MultiStepForm from './MultiStepForm';
+import Loader from '../Loader';
 
 const UpdateHospitalVisitForm = ({ id }) => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const UpdateHospitalVisitForm = ({ id }) => {
     diagnosis: [],
     treatment: [],
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchHospitalVisit = async () => {
@@ -20,6 +22,8 @@ const UpdateHospitalVisitForm = ({ id }) => {
         setFormData(response.data);
       } catch (error) {
         console.error('Error fetching hospital visit:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -32,17 +36,21 @@ const UpdateHospitalVisitForm = ({ id }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await axios.put(`/api/hospitalvisitentries/${id}`, formData);
       alert('Hospital visit updated successfully');
     } catch (error) {
       console.error('Error updating hospital visit:', error);
       alert('Error updating hospital visit');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div>
+      {loading && <Loader />}
       <h2>Update Hospital Visit</h2>
       <MultiStepForm formData={formData} handleChange={handleChange} handleSubmit={handleSubmit} />
     </div>
