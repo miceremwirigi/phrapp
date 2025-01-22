@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+
 import Cookies from 'js-cookie';
 import Header from './components/PhrHomePage/Header';
 import Footer from './components/PhrHomePage/Footer';
@@ -191,6 +192,7 @@ function App() {
               </PrivateRoute>
             } 
           />
+
         </Routes>
       </div>
       <Footer />
