@@ -14,7 +14,9 @@ const Signin = ({ setIsLoggedIn, setUsername }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://api.personalhealthrecord.store/api/login', formData);
+      const response = await axios.post('https://api.personalhealthrecord.store/api/login', formData, {
+        withCredentials: true,
+      });
       console.log('API Response:', response.data); // Add this line to log the API response
 
       // Wait a moment to ensure the cookie is set
