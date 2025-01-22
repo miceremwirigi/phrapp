@@ -30,7 +30,7 @@ const Signup = () => {
       return;
     }
     try {
-      await axios.post('https://api.personalhealthrecord.store/api/register', formData);
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/register`, formData);
       setMessage('Signup successful');
       setTimeout(() => {
         navigate('/signin');

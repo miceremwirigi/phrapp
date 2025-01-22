@@ -14,14 +14,14 @@ const Signin = ({ setIsLoggedIn, setUsername }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://api.personalhealthrecord.store/api/login', formData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/login`, formData, {
         withCredentials: true,
       });
       console.log('API Response:', response.data); // Add this line to log the API response
 
       // Wait a moment to ensure the cookie is set
       setTimeout(async () => {
-        const response = await axios.get('https://api.personalhealthrecord.store/api/check-auth', {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/check-auth`, {
           withCredentials: true,
           headers: {
             'Content-Type': 'application/json',
