@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Loader from '../Loader'; // Ensure this path is correct
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import './ViewHeartRateEntries.css';
 
 const ViewHeartRateEntries = () => {
   const [heartRateEntries, setHeartRateEntries] = useState([]);
@@ -23,6 +26,20 @@ const ViewHeartRateEntries = () => {
 
     fetchHeartRateEntries();
   }, []);
+
+  const generatePDF = () => {
+    const input = document.getElementById('heart-rate-table');
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, 'PNG', 0, 0);
+        pdf.save('heart_rate_entries.pdf');
+      })
+      .catch((error) => {
+        console.error('Error generating PDF:', error);
+      });
+  };
 
   if (loading) {
     return <Loader />;
@@ -52,7 +69,7 @@ const ViewHeartRateEntries = () => {
       <button className="cancel-button" onClick={() => navigate('/')}>X</button>
       <h2>Heart Rate Entries</h2>
       <div className="table-container">
-        <table className="sticky-header">
+        <table id="heart-rate-table" className="sticky-header">
           <thead>
             <tr>
               <th>ID</th>
@@ -79,6 +96,8 @@ const ViewHeartRateEntries = () => {
       </div>
       <div className="button-container">
         <button className="back-button" onClick={() => navigate(-1)}>Back</button>
+        <button className="pdf-button" onClick={() => navigate('/view-heart-rate-graph')}>View Graph</button>
+        <button className="pdf-button" onClick={generatePDF}>Generate PDF</button>
         <button className="add-button" onClick={() => navigate('/add-heart-rate-entry')}>Add</button>
       </div>
     </div>
