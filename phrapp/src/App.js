@@ -17,6 +17,7 @@ import OneSelfMedicationView from './components/SelfMedications/OneSelfMedicatio
 import OnePersonView from './components/Persons/OnePersonView';
 import ViewHospitals from './components/Hospitals/ViewHospitals';
 import ViewHeartRateEntries from './components/HeartRateMonitor/ViewHeartRateEntries';
+import ViewHeartRateGraph from './components/HeartRateMonitor/ViewHeartRateGraph';
 import axios from 'axios';
 import './App.css';
 import NotFound from './components/NotFound';
@@ -109,6 +110,14 @@ const AppContent = ({ isLoggedIn, setIsLoggedIn, setUsername, personId }) => {
           element={
             <PrivateRoute isLoggedIn={isLoggedIn}>
               <ViewHeartRateEntries />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/view-heart-rate-graph" 
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <ViewHeartRateGraph />
             </PrivateRoute>
           } 
         />
