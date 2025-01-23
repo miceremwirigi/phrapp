@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Loader from '../Loader';
+import { useNavigate } from 'react-router-dom';
+import Loader from '../Loader'; // Ensure this path is correct
 
 const ViewHospitals = () => {
   const [hospitals, setHospitals] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchHospitals = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/hospitalvisitentries`);
         const data = response.data.data; // Access the data field within the response object
-        const uniqueHospitals = Array.from(new Set(data.map(visit => visit.hospital.id)))
-          .map(id => data.find(visit => visit.hospital.id === id).hospital);
-        setHospitals(uniqueHospitals);
+        setHospitals(data.map(entry => entry.hospital));
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching hospitals:', error);
-        setHospitals([]);
-      } finally {
         setLoading(false);
       }
     };
@@ -25,30 +24,38 @@ const ViewHospitals = () => {
     fetchHospitals();
   }, []);
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
-    <div className="App-content">
-      {loading && <Loader />}
+    <div className="view-hospitals">
+      <button className="cancel-button" onClick={() => navigate('/')}>X</button>
       <h2>Hospitals</h2>
-      <table className="styled-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Telephone</th>
-          </tr>
-        </thead>
-        <tbody>
-          {hospitals.map((hospital) => (
-            <tr key={hospital.id}>
-              <td>{hospital.id}</td>
-              <td>{hospital.name}</td>
-              <td>{hospital.address}</td>
-              <td>{hospital.telephone}</td>
+      <div className="table-container">
+        <table className="sticky-header">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Telephone</th>
+              <th>Address</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {hospitals.map(hospital => (
+              <tr key={hospital.id}>
+                <td>{hospital.name}</td>
+                <td>{hospital.telephone || 'N/A'}</td>
+                <td>{hospital.address || 'N/A'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="button-container">
+        <button className="back-button" onClick={() => navigate(-1)}>Back</button>
+        <button className="add-button" onClick={() => navigate('/add-hospital')}>Add</button>
+      </div>
     </div>
   );
 };

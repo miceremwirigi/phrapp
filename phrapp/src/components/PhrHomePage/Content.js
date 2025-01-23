@@ -26,10 +26,10 @@ function Content() {
   };
 
   return (
-    <div className="Content-field">
+    <div className="parent-container">
       {loading && <Loader />}
-      <div className="menu">
-        <button className="menupbtn">Menu</button>
+      <div className="menu-container">
+        <button className="menu-button">Menu</button>
         <div className="menu-content">
           <button onClick={() => handleMenuClick('hospital-visits')}>Hospital visits</button>
           <button onClick={() => handleMenuClick('self-medication')}>Self Medication</button>
@@ -39,9 +39,9 @@ function Content() {
           <button onClick={() => handleMenuClick('my-details')}>My Details</button>
         </div>
       </div>
-      <div>
+      <div className="content-container">
         <h1>Welcome to PHR</h1>
-        <p>Find all the information related to your health records here.</p>
+        <p>Store and find information related to your health records here.</p>
         <p>Explore our features to manage your health effectively.</p>
       </div>
     </div>

@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Header from './components/PhrHomePage/Header';
 import Footer from './components/PhrHomePage/Footer';
 import PhrHomePage from './components/PhrHomePage/PhrHomePage';
-import PrivateRoute from './components/Auth/PrivateRoute';
+import PrivateRoute from './components/PrivateRoute';
 import ViewHospitalVisits from './components/HospitalVisits/ViewHospitalVisits';
 import AddHospitalVisitForm from './components/HospitalVisits/AddHospitalVisitForm';
 import OneHospitalVisitView from './components/HospitalVisits/OneHospitalVisitView';
@@ -20,6 +19,104 @@ import ViewHospitals from './components/Hospitals/ViewHospitals';
 import ViewHeartRateEntries from './components/HeartRateMonitor/ViewHeartRateEntries';
 import axios from 'axios';
 import './App.css';
+import NotFound from './components/NotFound';
+import Loader from './components/Loader';
+
+const AppContent = ({ isLoggedIn, setIsLoggedIn, setUsername, personId }) => {
+  return (
+    <div className="content-container">
+      <Routes>
+        <Route path="/" element={<PhrHomePage />} />
+        <Route 
+          path="/view-hospital-visits" 
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <ViewHospitalVisits isLoggedIn={isLoggedIn} />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/add-hospital-visit" 
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <AddHospitalVisitForm isLoggedIn={isLoggedIn} />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/hospital-visit/:id" 
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <OneHospitalVisitView isLoggedIn={isLoggedIn} />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/update-hospital-visit/:id" 
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <UpdateHospitalVisitForm isLoggedIn={isLoggedIn} />
+            </PrivateRoute>
+          } 
+        />
+        <Route path="/signup" element={<Signup />} />
+        <Route 
+          path="/signin" 
+          element={<Signin setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} 
+        />
+        <Route 
+          path="/add-self-medication" 
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <AddSelfMedicationForm isLoggedIn={isLoggedIn} />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/view-self-medications" 
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <ViewSelfMedications isLoggedIn={isLoggedIn} />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/self-medication/:id" 
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <OneSelfMedicationView isLoggedIn={isLoggedIn} />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/my-details" 
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <OnePersonView personId={personId} />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/view-hospitals" 
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <ViewHospitals />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/view-heart-rate-entries" 
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <ViewHeartRateEntries />
+            </PrivateRoute>
+          } 
+        />
+        <Route path="*" element={<NotFound isLoggedIn={isLoggedIn} />} />
+      </Routes>
+    </div>
+  );
+};
 
 function App() {
   const headerRef = useRef(null);
@@ -27,7 +124,8 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [personId, setPersonId] = useState(null);
-  const location = useLocation();
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -43,157 +141,56 @@ function App() {
           setIsLoggedIn(true);
           setUsername(response.data.data.username);
           setPersonId(response.data.data.personId);
+          localStorage.setItem('isLoggedIn', 'true');
         } else {
           console.error('Invalid response structure:', response.data);
           setIsLoggedIn(false);
           setUsername('');
           setPersonId(null);
+          localStorage.removeItem('isLoggedIn');
         }
       } catch (error) {
         console.error('Error checking auth:', error);
-        if (error.response) {
-          console.error('Response data:', error.response.data);
-          console.error('Response status:', error.response.status);
-          console.error('Response headers:', error.response.headers);
-        }
         setIsLoggedIn(false);
         setUsername('');
         setPersonId(null);
+        localStorage.removeItem('isLoggedIn');
+      } finally {
+        setLoading(false);
       }
     };
 
-    checkAuth();
-  }, []);
-
-  useEffect(() => {
-    const header = headerRef.current;
-    const content = contentRef.current;
-
-    if (location.pathname === '/') {
-      header.classList.add('show');
-      header.classList.remove('fade-out');
-      content.style.paddingTop = 'var(--header-height)';
+    const storedIsLoggedIn = localStorage.getItem('isLoggedIn');
+    if (storedIsLoggedIn === 'true') {
+      checkAuth();
     } else {
-      let headerTimeout;
-      const handleMouseMove = () => {
-        clearTimeout(headerTimeout);
-        header.classList.add('show');
-        header.classList.remove('fade-out');
-        content.style.paddingTop = 'var(--header-height)';
-        headerTimeout = setTimeout(() => {
-          header.classList.remove('show');
-          header.classList.add('fade-out');
-          content.style.paddingTop = '0';
-        }, 5000);
-      };
-
-      document.addEventListener('mousemove', handleMouseMove);
-
-      return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        clearTimeout(headerTimeout);
-      };
+      setLoading(false);
     }
-
-  }, [location.pathname]);
+  }, [navigate]);
 
   const handleLogout = () => {
     Cookies.remove('jwt');
     setIsLoggedIn(false);
     setUsername('');
     setPersonId(null);
+    localStorage.removeItem('isLoggedIn');
+    navigate('/signin');
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="App">
       <Header ref={headerRef} isLoggedIn={isLoggedIn} username={username} handleLogout={handleLogout} />
       <div ref={contentRef} className="App-content">
-        <Routes>
-          <Route path="/" element={<PhrHomePage />} />
-          <Route 
-            path="/view-hospital-visits" 
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <ViewHospitalVisits isLoggedIn={isLoggedIn} />
-              </PrivateRoute>
-            } 
-          />
-          <Route 
-            path="/add-hospital-visit" 
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <AddHospitalVisitForm isLoggedIn={isLoggedIn} />
-              </PrivateRoute>
-            } 
-          />
-          <Route 
-            path="/hospital-visit/:id" 
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <OneHospitalVisitView isLoggedIn={isLoggedIn} />
-              </PrivateRoute>
-            } 
-          />
-          <Route 
-            path="/update-hospital-visit/:id" 
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <UpdateHospitalVisitForm isLoggedIn={isLoggedIn} />
-              </PrivateRoute>
-            } 
-          />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/signin" element={<Signin setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
-          <Route 
-            path="/add-self-medication" 
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <AddSelfMedicationForm isLoggedIn={isLoggedIn} />
-              </PrivateRoute>
-            } 
-          />
-          <Route 
-            path="/view-self-medications" 
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <ViewSelfMedications isLoggedIn={isLoggedIn} />
-              </PrivateRoute>
-            } 
-          />
-          <Route 
-            path="/self-medication/:id" 
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <OneSelfMedicationView isLoggedIn={isLoggedIn} />
-              </PrivateRoute>
-            } 
-          />
-          <Route 
-            path="/my-details" 
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <OnePersonView personId={personId} />
-              </PrivateRoute>
-            } 
-          />
-          <Route 
-            path="/view-hospitals" 
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <ViewHospitals />
-              </PrivateRoute>
-            } 
-          />
-          <Route 
-            path="/view-heart-rate-entries" 
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <ViewHeartRateEntries />
-              </PrivateRoute>
-            } 
-          />
-
-        </Routes>
+        <AppContent 
+          isLoggedIn={isLoggedIn} 
+          setIsLoggedIn={setIsLoggedIn} 
+          setUsername={setUsername} 
+          personId={personId} 
+        />
       </div>
       <Footer />
     </div>
