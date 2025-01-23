@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../Loader'; // Ensure this path is correct
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import 'jspdf-autotable';
 import './ViewHeartRateEntries.css';
 
 const ViewHeartRateEntries = () => {
@@ -28,17 +28,28 @@ const ViewHeartRateEntries = () => {
   }, []);
 
   const generatePDF = () => {
-    const input = document.getElementById('heart-rate-table');
-    html2canvas(input)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF();
-        pdf.addImage(imgData, 'PNG', 0, 0);
-        pdf.save('heart_rate_entries.pdf');
-      })
-      .catch((error) => {
-        console.error('Error generating PDF:', error);
-      });
+    const doc = new jsPDF();
+    const personName = heartRateEntries.length > 0 ? heartRateEntries[0].person.first_name : 'heart_rate_entries';
+
+    doc.text(`${personName}'s Heart Rate Entries`, 14, 16);
+    doc.autoTable({
+      head: [['ID', 'Date', 'Day', 'Time', 'Person', 'Heart Rate']],
+      body: heartRateEntries.map(entry => [
+        entry.id,
+        formatDate(entry.recorded_at),
+        formatDay(entry.recorded_at),
+        formatTime(entry.recorded_at),
+        entry.person.first_name,
+        entry.heart_rate
+      ]),
+      startY: 20,
+      theme: 'grid',
+      headStyles: { fillColor: [75, 192, 192] },
+      styles: { overflow: 'linebreak' },
+      columnStyles: { 0: { cellWidth: 'auto' } }
+    });
+
+    doc.save(`${personName}_heart_rate_entries.pdf`);
   };
 
   if (loading) {
@@ -65,25 +76,23 @@ const ViewHeartRateEntries = () => {
   };
 
   return (
-    <div className="view-heart-rate-entries">
-      <button className="cancel-button" onClick={() => navigate('/')}>X</button>
-      <h2>Heart Rate Entries</h2>
-      <div className="table-container">
-        <table id="heart-rate-table" className="sticky-header">
+    <div className="heartrate-container">
+      <div className="table-wrapper">
+        <table id="heart-rate-table" className="heartrate-table">
           <thead>
             <tr>
               <th>ID</th>
               <th>Date</th>
               <th>Day</th>
               <th>Time</th>
-              <th>First Name</th>
+              <th>Person</th>
               <th>Heart Rate</th>
             </tr>
           </thead>
           <tbody>
-            {heartRateEntries.map(entry => (
-              <tr key={entry.id}>
-                <td>{entry.id.slice(0, 8)}</td>
+            {heartRateEntries.map((entry, index) => (
+              <tr key={index}>
+                <td>{entry.id}</td>
                 <td>{formatDate(entry.recorded_at)}</td>
                 <td>{formatDay(entry.recorded_at)}</td>
                 <td>{formatTime(entry.recorded_at)}</td>
