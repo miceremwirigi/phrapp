@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../Loader';
+import logo from './logo.svg'; // Ensure you have a logo image
 
 function Content() {
   const [loading, setLoading] = useState(false);
@@ -43,6 +44,7 @@ function Content() {
         <h1>Welcome to PHR</h1>
         <p>Store and find information related to your health records here.</p>
         <p>Explore our features to manage your health effectively.</p>
+        <img src={logo} className="App-logo-rotate" alt="logo" />
       </div>
     </div>
   );

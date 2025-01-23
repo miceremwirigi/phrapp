@@ -112,7 +112,7 @@ const AppContent = ({ isLoggedIn, setIsLoggedIn, setUsername, personId }) => {
             </PrivateRoute>
           } 
         />
-        <Route path="*" element={<NotFound isLoggedIn={isLoggedIn} />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
