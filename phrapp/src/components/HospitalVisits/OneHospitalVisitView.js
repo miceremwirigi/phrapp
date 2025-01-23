@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Loader from '../Loader';
 
 const OneHospitalVisitView = () => {
   const { id } = useParams();
   const [hospitalVisit, setHospitalVisit] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchHospitalVisit = async () => {
@@ -34,6 +35,7 @@ const OneHospitalVisitView = () => {
 
   return (
     <div className="details-view">
+      <button className="cancel-button" onClick={() => navigate('/')}>X</button>
       <h2>Hospital Visit Details</h2>
       <table>
         <thead>

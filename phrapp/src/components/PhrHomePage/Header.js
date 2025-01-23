@@ -23,7 +23,7 @@ const Header = React.forwardRef((props, ref) => {
         {isLoggedIn ? (
           <div className="profile">
             <span>Welcome, {username}</span>
-            <button onClick={handleLogout}>Logout</button>
+            <button className="logout-button" onClick={handleLogout}>Logout</button>
           </div>
         ) : (
           <>

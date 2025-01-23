@@ -45,46 +45,54 @@ const ViewHospitalVisits = () => {
     navigate('/');
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
-    <div className="App-content">
-      {loading && <Loader />}
+    <div className="view-hospital-visits">
+      <button className="cancel-button" onClick={() => navigate('/')}>X</button>
       <h2>Hospital Visits</h2>
-      <button onClick={handleAddHospitalVisit}>Add Hospital Visit</button>
-      <button onClick={handleBack} className="back-button">Back</button>
-      <table className="styled-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Person</th>
-            <th>Hospital</th>
-            <th>Reason</th>
-            <th>Diagnosis</th>
-            <th>Treatment</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {hospitalVisits.map((visit) => (
-            <tr key={visit.id} onClick={() => handleRowClick(visit.id)} style={{ cursor: 'pointer' }}>
-              <td>{visit.id}</td>
-              <td>{visit.person.first_name} {visit.person.last_name}</td>
-              <td>{visit.hospital.name}</td>
-              <td>{visit.reason}</td>
-              <td>
-                {visit.diagnosis.illnesses ? visit.diagnosis.illnesses.map(i => i.illness_name).join(', ') : 'N/A'}
-              </td>
-              <td>
-                {visit.treatment.medication ? visit.treatment.medication.join(', ') : 'N/A'}<br />
-                {visit.treatment.therapy ? visit.treatment.therapy.join(', ') : 'N/A'}<br />
-                {visit.treatment.surgery ? visit.treatment.surgery.join(', ') : 'N/A'}
-              </td>
-              <td>{visit.start_date}</td>
-              <td>{visit.end_date}</td>
+      <div className="table-container">
+        <table className="sticky-header">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Person</th>
+              <th>Hospital</th>
+              <th>Reason</th>
+              <th>Diagnosis</th>
+              <th>Treatment</th>
+              <th>Start Date</th>
+              <th>End Date</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {hospitalVisits.map((visit) => (
+              <tr key={visit.id} onClick={() => handleRowClick(visit.id)} style={{ cursor: 'pointer' }}>
+                <td>{visit.id}</td>
+                <td>{visit.person.first_name} {visit.person.last_name}</td>
+                <td>{visit.hospital.name}</td>
+                <td>{visit.reason}</td>
+                <td>
+                  {visit.diagnosis.illnesses ? visit.diagnosis.illnesses.map(i => i.illness_name).join(', ') : 'N/A'}
+                </td>
+                <td>
+                  {visit.treatment.medication ? visit.treatment.medication.join(', ') : 'N/A'}<br />
+                  {visit.treatment.therapy ? visit.treatment.therapy.join(', ') : 'N/A'}<br />
+                  {visit.treatment.surgery ? visit.treatment.surgery.join(', ') : 'N/A'}
+                </td>
+                <td>{visit.start_date}</td>
+                <td>{visit.end_date}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="button-container">
+        <button className='back-button' onClick={handleBack}>Back</button>
+        <button className='add-button' onClick={handleAddHospitalVisit}>Add Hospital Visit</button>
+      </div>
     </div>
   );
 };

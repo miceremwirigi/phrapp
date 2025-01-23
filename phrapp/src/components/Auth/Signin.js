@@ -32,6 +32,7 @@ const Signin = ({ setIsLoggedIn, setUsername }) => {
         if (response.data && response.data.data.personId && response.data.data.username) {
           setIsLoggedIn(true);
           setUsername(response.data.data.username);
+          localStorage.setItem('isLoggedIn', 'true');
           setMessage('Signin successful');
           navigate('/');
         } else {

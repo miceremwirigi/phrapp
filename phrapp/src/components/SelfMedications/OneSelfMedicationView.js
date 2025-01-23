@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Loader from '../Loader';
 
 const OneSelfMedicationView = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [selfMedication, setSelfMedication] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -34,6 +35,7 @@ const OneSelfMedicationView = () => {
 
   return (
     <div className="details-view">
+      <button className="cancel-button" onClick={() => navigate('/')}>X</button>
       <h2>Self Medication Details</h2>
       <table>
         <thead>

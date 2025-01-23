@@ -4,6 +4,7 @@
   --footer-height: 40px; /* Example original height */
 }
 
+
 html, body, #root, .App, .App-content, .PhrHomePage  {
   height: 100vh;
   width: 100vw;
@@ -19,6 +20,7 @@ html, body, #root, .App, .App-content, .PhrHomePage  {
   display: flex;
   flex-direction: column;
   flex: 1;
+  height: 100vh;
 }
 
 .App-logo {
@@ -28,7 +30,7 @@ html, body, #root, .App, .App-content, .PhrHomePage  {
 }
 
 .App-header {
-  height: calc(var(--header-height) * 0.75);
+  height: var(--header-height);
   margin: left 0;
   display: flex;
   justify-content: space-between;
@@ -36,13 +38,10 @@ html, body, #root, .App, .App-content, .PhrHomePage  {
   padding: 10px;
   background-color: #282c34; /* Dark shade */
   color: white;
-  width: 99%; /* Ensure the header matches the viewport width */
+  width: 100%; /* Ensure the header matches the viewport width */
   position: fixed; /* Fix the header at the top */
   top: 0;
-  opacity: 0.1; /* Initially hidden */
-  transform: translateY(-40%); /* Move header out of view */
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-  z-index: 1; /* Ensure the header is above the content */
+  z-index: 1000;
 }
 
 .App-header:hover {
@@ -93,6 +92,21 @@ html, body, #root, .App, .App-content, .PhrHomePage  {
   font-size: 1em;
 }
 
+.loader {
+  border: 4px solid #f3f3f3; /* Light grey */
+  border-top: 4px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 2s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .App-content {
   flex: 1;
   flex-direction: column;
@@ -104,11 +118,13 @@ html, body, #root, .App, .App-content, .PhrHomePage  {
   color: white;
   text-align: center;
   position: relative; /* Ensure content is positioned relative to the header and footer */
-  transition: padding-top 0.3s ease-in-out;
+  margin-top: var(--header-height); /* Adjust based on header height */
+  overflow-y: auto;
 }
 
 /* Menu styling */
 .menu {
+  
   position: relative;
   margin-top: 50px;
   margin-left: 0;
@@ -117,11 +133,12 @@ html, body, #root, .App, .App-content, .PhrHomePage  {
   z-index: 1; /* Ensure the menu is above the content */
 }
 
-.menupbtn {
+.menubtn {
   background-color: #0ea8f0;
   color: white;
   padding: 16px;
   font-size: 16px;
+  
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
@@ -245,6 +262,21 @@ form button:hover {
 form .form-group {
   margin-bottom: 20px;
 }
+/* Add button styling */
+.add-button {
+  background-color: #0ea8f0;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-bottom: 8vh;
+}
+
+.add-button:hover {
+  background-color: #03b2c9;
+}
 
 /* Back button styling */
 .back-button {
@@ -255,7 +287,7 @@ form .form-group {
   border-radius: 4px;
   cursor: pointer;
   font-size: 1em;
-  margin-bottom: 20px;
+  margin-bottom: 8vh;
 }
 
 .back-button:hover {
@@ -358,7 +390,15 @@ form .form-group {
 
   .search-button {
     width: 100%;
+    background-color: #0ea8f0;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
   }
+
 
   .left-section, .center-section, .right-section {
     flex-direction: column;
@@ -366,8 +406,22 @@ form .form-group {
   }
 
   .signin, .profile {
-    margin-right: 5px;
+    margin-right: 5vw;
     margin-bottom: 10px;
+    font-size: 1em;
+    padding: 10px 20px;
+  }
+  
+  .logout-button {
+    width: min-content;
+    background-color: #0ea8f0;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-left: 2vw;
   }
 
   .App-content {
@@ -418,13 +472,9 @@ form .form-group {
 
 /* General table styling */
 table {
-  width: 80%;
-  max-width: 80%;
-  margin: 0 auto;
-  border-collapse: collapse;
-  background-color: #333; /* Dark background color */
-  color: #fff; /* Light text color */
-  overflow: auto; /* Make table content scrollable */
+  width: 100%;
+  max-width: 100%;
+  overflow: auto;
   display: block;
 }
 
@@ -445,7 +495,7 @@ table td {
 /* ID field styling */
 table td.id-field {
   max-width: 100px; /* Smaller max width for ID field */
-  overflow: hidden;
+  overflow: auto;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -518,6 +568,37 @@ form button {
   gap: 10px;
 }
 
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  padding: 0 20px;
+}
+
+.cancel-button {
+  position: absolute;
+  top: 8vh;
+  right: 5vw;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cancel-button:hover {
+  background-color: #ff1a1a;
+}
+
 /* Media query for smaller screens (phones) */
 @media (max-width: 600px) {
   /* Smaller buttons */
@@ -578,4 +659,173 @@ form button {
     padding: 8px;
     font-size: 12px;
   }
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+
+  .logout-button {
+    width: min-content;
+    background-color: #0ea8f0;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-left: 2vw;
+  }
+
+  .App-header {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+  }
+
+  .App-footer {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+  }
+
+  form {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+  }
+
+  form textarea {
+    background-color: #333;
+    color: #e0e0e0;
+  }
+
+  form button {
+    background-color: #333;
+    color: #e0e0e0;
+  }
+
+  table {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+  }
+
+  table th {
+    background-color: #333;
+    color: #e0e0e0;
+  }
+
+  table td {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+  }
+
+  .menu {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+  }
+
+  .menu-content {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+  }
+
+  .menu-content button {
+    background-color: #333;
+    color: #e0e0e0;
+  }
+}
+
+.table-container {
+  max-height: calc(100vh - var(--header-height) - var(--footer-height)); /* Adjust based on header and footer height */
+  overflow: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.table-container::-webkit-scrollbar {
+  display: none;  /* WebKit browsers */
+}
+
+.sticky-header th {
+  position: sticky;
+  top: 0;
+  background-color: #282c34;
+  color: white;
+  z-index: 1;
+}
+
+/* Hide scrollbars for WebKit browsers */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbars for Firefox */
+body {
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbars for Internet Explorer and Edge */
+body {
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  padding: 0 20px;
+}
+
+.parent-container {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+.menu-container {
+  position: relative;
+  top: 0;
+  right: 0;
+  background-color: #282c34; /* Dark shade */
+  color: white;
+  padding: 10px;
+  transition: width 0.3s ease-in-out;
+  z-index: 999;
+}
+
+.menu-content {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-button {
+  background-color: #0ea8f0;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.menu-button:hover {
+  background-color: #03b2c9;
+}
+
+.menu-button:focus + .menu-content,
+.menu-content:hover {
+  display: flex;
+}
+
+.content-container {
+  flex: 1;
+  padding: 20px;
+  
+  /* overflow-y: auto; */
+  /* overflow-x: hidden; */
 }
