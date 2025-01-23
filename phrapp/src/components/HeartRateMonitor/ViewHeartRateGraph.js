@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../Loader'; // Ensure this path is correct
 import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import html2canvas from 'html2canvas';
 import { Chart, registerables } from 'chart.js';
 import 'chartjs-adapter-date-fns';
@@ -69,40 +70,43 @@ const ViewHeartRateGraph = () => {
   }, [loading, heartRateEntries]);
 
   const generatePDF = () => {
-    const input = document.getElementById('heart-rate-table');
     const chart = document.getElementById('heartRateChart');
     const personName = heartRateEntries.length > 0 ? heartRateEntries[0].person.first_name : 'heart_rate_entries';
 
-    html2canvas(input, { scale: 2 })
+    const doc = new jsPDF();
+    doc.text(`${personName}'s Heart Rate Entries`, 14, 16);
+
+    doc.autoTable({
+      head: [['ID', 'Date', 'Day', 'Time', 'Person', 'Heart Rate']],
+      body: heartRateEntries.map(entry => [
+        entry.id,
+        formatDate(entry.recorded_at),
+        formatDay(entry.recorded_at),
+        formatTime(entry.recorded_at),
+        entry.person.first_name,
+        entry.heart_rate
+      ]),
+      startY: 20,
+      theme: 'grid',
+      headStyles: { fillColor: [75, 192, 192] },
+      styles: { overflow: 'linebreak' },
+      columnStyles: { 0: { cellWidth: 'auto' } }
+    });
+
+    html2canvas(chart, { scale: 2 })
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF();
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const pdfHeight = doc.internal.pageSize.getHeight();
         const imgWidth = canvas.width;
         const imgHeight = canvas.height;
         const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
         const imgX = (pdfWidth - imgWidth * ratio) / 2;
         const imgY = 20; // Align a tab from the top
 
-        pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-
-        html2canvas(chart, { scale: 2 })
-          .then((chartCanvas) => {
-            const chartImgData = chartCanvas.toDataURL('image/png');
-            const chartImgWidth = chartCanvas.width;
-            const chartImgHeight = chartCanvas.height;
-            const chartRatio = Math.min(pdfWidth / chartImgWidth, pdfHeight / chartImgHeight);
-            const chartImgX = (pdfWidth - chartImgWidth * chartRatio) / 2;
-            const chartImgY = 20; // Align a tab from the top
-
-            pdf.addPage();
-            pdf.addImage(chartImgData, 'PNG', chartImgX, chartImgY, chartImgWidth * chartRatio, chartImgHeight * chartRatio);
-            pdf.save(`${personName}_heart_rate_entries.pdf`);
-          })
-          .catch((error) => {
-            console.error('Error generating PDF:', error);
-          });
+        doc.addPage();
+        doc.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+        doc.save(`${personName}_heart_rate_entries.pdf`);
       })
       .catch((error) => {
         console.error('Error generating PDF:', error);
@@ -134,12 +138,13 @@ const ViewHeartRateGraph = () => {
 
   return (
     <div className="heartrate-container">
-      <button className="cancel-button" onClick={() => navigate('/')}>X</button>
       <div className="table-wrapper">
         <table id="heart-rate-table" className="heartrate-table">
           <thead>
             <tr>
+              <th>ID</th>
               <th>Date</th>
+              <th>Day</th>
               <th>Time</th>
               <th>Person</th>
               <th>Heart Rate</th>
@@ -148,7 +153,9 @@ const ViewHeartRateGraph = () => {
           <tbody>
             {heartRateEntries.map((entry, index) => (
               <tr key={index}>
+                <td>{entry.id}</td>
                 <td>{formatDate(entry.recorded_at)}</td>
+                <td>{formatDay(entry.recorded_at)}</td>
                 <td>{formatTime(entry.recorded_at)}</td>
                 <td>{entry.person.first_name}</td>
                 <td>{entry.heart_rate}</td>
